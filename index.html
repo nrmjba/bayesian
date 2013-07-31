@@ -1,82 +1,177 @@
-<!doctype html>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Bayesian by sethrylan</title>
+<head>
+<title>An Educated Guess</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<link rel="stylesheet" media="screen" href="stylesheets/bayesian.css"/>
+</head>
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1 class="header">Bayesian</h1>
-        <p class="header"></p>
+<body>
 
-        <ul>
-          <li class="download"><a class="buttons" href="https://github.com/sethrylan/bayesian/zipball/master">Download ZIP</a></li>
-          <li class="download"><a class="buttons" href="https://github.com/sethrylan/bayesian/tarball/master">Download TAR</a></li>
-          <li><a class="buttons github" href="https://github.com/sethrylan/bayesian">View On GitHub</a></li>
-        </ul>
+<div id="info">
+<h1 id="name">an educated guess</h1>
 
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/sethrylan">sethrylan</a></p>
+<!--p>
+Assistant Professor<br/>
+<a href="http://cs.stanford.edu">Computer Science Department</a><br/>
+<a href="http://www.stanford.edu">Stanford University</a>
+</p-->
+<p>
+A tool for calibrated probability estimation
+</p>
 
 
-      </header>
-      <section>
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+<div>
+<h2>Recent Changes</h2>
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr class="visited">
+  <td valign="top">2013 July 31</td>
+  <td valign="top">Started Project</td>
+</tr>
+</table>
+</div>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+</div>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<div id="main">
+<h1>
+about &nbsp;&nbsp;&nbsp;
+<a class="nav" href="calibrate.html">calibrate</a> &nbsp;&nbsp;&nbsp;
+</h1>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<div class="text">
+<table width="100%" cellpadding="0" cellspacing="0">
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<tr>
+<td width="80%" valign="top" style="padding-right: 25px;">
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<h6 style="padding-top: 10px;">the bad news</h6>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>
+You are a terrible guesser. 
+</p>
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<p>
+In fact, I'm a terrible guesser. So are most people, with the exception of some well-trained meterologists and professional gamblers.
+</p>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>
+When I say 'guessing,' I'm referring to a properly calibrated probability estimate. If one were to guess the gross domestic earnings of <em>The Goonies</em>, you would probably be wrong, because this tests specific domain knowledge. Rephrasing the question as:
+<blockquote>
+"What are your high and low estimates for the gross domestic earnings of the <em>The Goonies</em>? What interval estimate of <a href="https://en.wikipedia.org/wiki/Confidence_interval">confidence</a> would give this range?"
+</blockquote>
 
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+You might answer:
+<blockquote>
+"Between $100,000 to $100,000,000, inclusive, with 90% confidence."
+</blockquote>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-      <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
-      </footer>
-    </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		          <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-33138107-1");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
+Given enough data points (say, the 100 top grossing films of 1980-1989) in a sufficiently ideal world, the estimated confidence interval would match the observed accuracy. I.e., the range estimates give with 90% confidence should - on average and with minimal variance - be correct 90% of the time. This changes the exercise from a measurement of trivia knowledge to a measurement of the confidence in your knowledge.  However, only about 70% [ citation needed ] of estimated ranges with a 90% CI will contain the actual value, not because of a lack of public knowledge in 20th century film economics, but because humans habitually display overconfident estimates. What we know is about 25-45 percent less than what we think we know [ citation needed ].
+</p>
 
-  </body>
-</html>
+<p>
+The exact <a href="http://www.boxofficemojo.com/movies/?id=goonies.htm">answer</a> is $61,389,680.
+</p>
+
+
+<h6 style="padding-top: 10px;">cognitive bugs</h6>
+
+<p>
+Cognitive biases that act against our correct estimation of prior probablity: 
+<ul>
+<li>anchoring</li>
+<li>...</li>
+<li>Prospect theory: small probabilities are overweighted, especially when attached to high-consequence events (p100, Scott Plous)</li>
+<li>we seek to reduce risk/uncertainty, and will pay an economic premium for it (p100, Plous)</li>
+<li>"missing, noisy or imprecise variables."  Ambguity makes us uncomfortable.</li>
+<li>Our educational training emphasizes algebra and calculus as the end goals, <a href="http://informaticsprofessor.blogspot.com/2013/05/basic-statistics-should-be-core.html">not probability and statistics</a></li>
+</ul>
+
+These biases are to estimation as geometrical-optical illusions [image] are to psychometrics. A simple change of the problem context causes a predicatable change in the perceived reality. In general, humans have a very troubled relationship with uncertainty. We don't understand it instintually, and a large part of current information science is devoted to ways of <a href="http://www.nature.com/nmeth/journal/v10/n7/full/nmeth.2530.html">accurately communicating</a> it.
+</p>
+
+
+<h6 style="padding-top: 10px;">you should care</h6>
+
+<p>
+
+Our inability to estimate creates problems for accurate forecasts. Future sales forecasts, , such as the 
+Third-Times-A-Charm Planning: "Make yourself a plan and be a shining light"
+Know-It-When-We-See-It Planning: "Today Do I bake, tomorrow I brew, and the day after that I steal the Queen's child"
+Some of these
+http://www.quora.com/Engineering-Management/Why-are-software-development-task-estimations-regularly-off-by-a-factor-of-2-3
+Bayesian is sometimes called "subjectivist"
+</p>
+
+
+<h6 style="padding-top: 10px;">mensa mea bona est</h6>
+
+Overconfident guessing follows a predictable pattern. Overconfidence is usual for difficult assessments (although slightly less for T/F tests; Hubbard p64). Underconfidence for easy ones. Calibration fixes this.
+<ul>
+<li>Rationalize answers with pros and cons (Hubbard p64)</li>
+<li>Range estimates to reduce the anchoring effect of a point estimate. Particularly, working towards a narrow range for an absurdly large range.</li>
+<li>Confidence intervals</li>
+<li></li>
+</ul>
+
+
+<h6 style="padding-top: 10px;">other examples</h6>
+If you want to try other types of calibrated probability assessments:
+
+<ul>
+<li><a href="http://lesswrong.com/lw/1f8/test_your_calibration/">A list of them here</a></li>
+<li><a href="http://www.acceleratingfuture.com/steven/?p=136">Aumann Game: a self-scoring example</a></li>
+<li><a href="http://calibratedprobabilityassessment.org">an automated quiz</a> that produces a <a href="http://calibratedprobabilityassessment.org/graph.php?y=0.28571428571429-0.90909090909091-0.75-1-1&x=55-65-75-85-95">nifty graph</a></li>
+<li></li>
+</ul>
+
+
+Sources:
+<a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.71.4909&rep=rep1&type=pdf">Cognitive Factors Affecting Subjective Probability Assessment</a>
+<a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC557240/pdf/bmj33001080.pdf">Why clinicians are natural bayesians</a>
+<a href="http://www.dtic.mil/dtic/tr/fulltext/u2/a069703.pdf">Training for Calibration</a>
+<a href="http://act-r.psy.cmu.edu/papers/710/gunzelmann_gluck-2004.pdf">Knowledge Tracing for Complex Training Applications: Beyond Bayesian Mastery Estimates</a>
+<a href="http://www.dtic.mil/dtic/tr/fulltext/u2/a101986.pdf">Calibration of Probabilities: The State of the Art to 1980</a>
+
+
+precision vs recall
+sensitivity vs specificity
+type I vs type II
+
+positive likelihood ratio = (sensitivity/(1-specificity))
+
+Non US preferrence for questions
+norse mythology trivia
+movie budgets
+Population:
+  Area of countries
+  <a href="http://en.wikipedia.org/wiki/List_of_United_States_cities_by_population_density">pop density</a>
+  http://www.facster.com/display.aspx?t=2842
+  http://www.census.gov/prod/2003pubs/02statab/pop.pdf
+translations
+<a href="http://www.census.gov/compendia/statab/2008/cats/science_technology/students_and_degrees_conferred.html">STEM degrees</a>
+
+
+
+f2147 (total area) -> f2023 (area comparative) -> area ranking
+population -> urbanization -> age struture -> population ranking
+
+Quote citations: http://www.webmaster-source.com/2012/04/24/pure-css-blockquote-styling/
+
+
+</td>
+
+<td width="20%" valign="top">
+</td>
+
+</tr>
+</table>
+</div>
+
+</div>
+
+</body>
+
+</html> 

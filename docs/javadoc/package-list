@@ -1,1 +1,4 @@
+org.lenition.domain
+org.lenition.filter
 org.lenition.servlet
+org.lenition.singleton

@@ -200,10 +200,12 @@ $(document).ready(function() {
     
     /* Insert questions in HTML */        
     var url = "http://bayesian-calibration.appspot.com/factbook/questions";
+    var n = 30;
     //var url = 'http://localhost:8080/factbook/questions';
     if(get('n')) {
-        url += '?n=' + n;
-    } 
+        n = get('n');
+    }
+    url += '?n=' + n;
     $.getJSON(url, function(data) {
       var questions = [];
      
@@ -211,7 +213,7 @@ $(document).ready(function() {
           $('#progressContainer').after(
               '<div class="questionContainer radius hide">' + 
                 '<div class="question">' + q.text +
-                  '<a href="#" title="' + q.hint + '">[ hint ]</a>' +
+                  '<a href="#" class="hint" title="' + q.hint + '">[ hint ]</a>' +
                 '</div>' +
                 '<div class="fact hide">' + q.fact + '</div>' + 
                 '<div class="feedback hide">' + q.feedback + '</div>' +
@@ -239,9 +241,16 @@ $(document).ready(function() {
         }
     });
 
-    $( document ).tooltip({
+    $('.hint').qtip({
+        hide: {
+            fixed: true,
+            delay: 300
+        },
         content: function() {
             return $(this).attr('title');
+        },
+        style: {
+            classes: 'qtip-light qtip-shadow'
         }
     });
 

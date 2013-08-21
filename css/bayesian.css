@@ -2,7 +2,20 @@
  *	#div-id
  *	.class-name
  */
- 
+.center {
+ display: block;
+ margin-left: auto;
+ margin-right: auto
+}
+sup {
+ font-size: 0.83em;
+ vertical-align: super;
+ line-height: 0;
+}
+.csl-entry {
+ padding-left: 22px;
+ text-indent: -22px;
+}    
 body {
  max-width: 960px;
  min-width: 960px;

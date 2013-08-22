@@ -1,15 +1,14 @@
 ---
 ---
+// See the controversy on Jekyll dev mode flags at github.com/plusjade/jekyll-bootstrap/issues/84
+{% if site.safe %}
 var questionsUrl = "http://bayesian-calibration.appspot.com/factbook/questions";
 var jdsUrl = "http://persistence.bayesian-calibration.appspot.com/stats";
+{% else %}
+var questionsUrl = 'http://localhost:8080/factbook/questions';
+var jdsUrl = "http://localhost:8080/stats/";
+{% endif %}
 var defaultNumQuestions = 40;
-
-// See the controversy on Jekyll dev mode flags at https://github.com/plusjade/jekyll-bootstrap/issues/84
-if ({{site.safe}}) {
-    var questionsUrl = 'http://localhost:8080/factbook/questions';
-    var jdsUrl = "http://localhost:8080/stats/";
-    
-}
 
 
 function confidenceSliderUpdate(event, ui) {

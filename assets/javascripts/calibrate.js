@@ -1,4 +1,8 @@
+---
+layout: nil
+---
 // see the controversy on Jekyll dev mode flags at github.com/plusjade/jekyll-bootstrap/issues/84
+// layout added
 var questionsUrl = "http://bayesian-calibration.appspot.com/factbook/questions";
 //var questionsUrl = "http://localhost:8080/factbook/questions";
 var jdsUrl = "http://persistence.bayesian-calibration.appspot.com/";

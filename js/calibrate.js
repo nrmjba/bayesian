@@ -1,7 +1,7 @@
 var questionsUrl = "http://bayesian-calibration.appspot.com/factbook/questions";
 //var questionsUrl = 'http://localhost:8080/factbook/questions';
-//var jdsUrl = "http://persistence.bayesian-calibration.appspot.com/";
-var jdsUrl = "http://localhost:8080/";
+var jdsUrl = "http://persistence.bayesian-calibration.appspot.com/";
+//var jdsUrl = "http://localhost:8080/stats/";
 
 function confidenceSliderUpdate(event, ui) {
     if( ui ) {
@@ -312,44 +312,14 @@ $(document).ready(function() {
     $questions = $('.questionContainer');
     $questions.hide();
     $($questions.get(currentQuestion)).fadeIn();
-    
+
     var jQuiz = {
-        finish: function() {
-            var resultDiv = '';
-            var trueCount = 0;
-            for (var key in this.responses) {
-                var response = this.responses[key];
-                if (response.correct) {
-                    trueCount++;
-                }
-                //resultDiv += '<div> Question ' + (response.index + 1) + ' is ' + (response.correct ? "correct" : "incorrect") + '</div>'
-            }
-            resultDiv += '<div class="totalScore">Your total score is ' + parseInt(trueCount * (100/totalQuestions), 10) + ' / 100</div>'
-            $('#resultContainer').html(resultDiv).show();
-            $('#next').hide();
-            $('#back').hide();
-            $('#sidebarChart').hide();
-            drawLargeChart(jQuiz.calibrationData());
-            
-            var stats = { 
-                "startDate": "2013-08-19T14:29Z",
-                "finishDate": "2013-08-19T14:30Z",
-                "responses": this.responses
-            }; 
-            $.ajax({
-                url: jdsUrl,
-                type: 'PUT',
-                //contentType: "application/json; charset=utf-8",
-                //dataType: "json",
-                data: stats,
-                success: function(data) {
-                    alert('Load was performed.');
-                }
-            });
-        },
         init: function() {
             // create empty array for responses
             jQuiz.responses = [];
+            jQuiz.stats = { 
+                "startDate": (new Date()).toISOString()
+            }; 
             
             drawSidebarChart(jQuiz.calibrationData());
 
@@ -427,6 +397,46 @@ $(document).ready(function() {
                 var el = $('#progress');
                 el.width(el.width() + progressPixels + 'px');				
             });			
+        },        
+        finish: function() {
+            var resultDiv = '';
+            var trueCount = 0;
+            for (var key in this.responses) {
+                var response = this.responses[key];
+                if (response.correct) {
+                    trueCount++;
+                }
+            }
+            resultDiv += '<div class="totalScore">Your total score is ' + parseInt(trueCount * (100/totalQuestions), 10) + ' / 100</div>'
+            $('#resultContainer').html(resultDiv).show();
+            $('#next').hide();
+            $('#back').hide();
+            $('#sidebarChart').hide();
+            drawLargeChart(jQuiz.calibrationData());
+            
+            // Build and post telemetry data
+            this.stats.client = {};
+            this.stats.client.platform = navigator.platform;
+            this.stats.client.userAgent = navigator.userAgent;
+            this.stats.client.systemLanguage = navigator.systemLanguage;
+            this.stats.client.gmtOffset = new Date().getTimezoneOffset();
+            this.stats.client.screenResolution = screen.width + '×' + screen.height;
+            this.stats.client.platform = navigator.platform;
+            this.stats.client.platform = navigator.platform;
+
+            this.stats.finishDate = (new Date()).toISOString();
+            this.stats.responses = this.responses;
+            $.ajax({
+                url: jdsUrl,
+                type: 'PUT',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                crossDomain: true,
+                data: JSON.stringify(this.stats),
+                failure: function(data) {
+                    console.error("data failed to upload: " + JSON.stringify(this.stats));
+                }
+            });
         },
         addResponse: function() {
             var fact = $('.questionContainer:visible > .fact').text();
@@ -503,7 +513,8 @@ $(document).ready(function() {
                 
                 context.fillStyle = '#2F4F4F';
                 context.font = '10px monospace';
-                context.fillText(name, centerX - name.length * 3, centerY - (radius + 10));				
+                context.fillText(name, centerX - name.length * 3, centerY - (radius + 10));			
+                // uncomment for country text to appear in arc around circle    
                 //context.fillTextArc(name, centerX, centerY, radius + 20, (7/6)*Math.PI, Math.PI/name.length);				
                 
                 context.fillStyle = '#2F4F4F';

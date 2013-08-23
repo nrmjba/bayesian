@@ -7,18 +7,74 @@ function confidenceSliderUpdate(event, ui) {
     }
 }
 
-var margin = {top: 20, right: 10, bottom: 30, left: 30},
-    width = 200 - margin.left - margin.right,
-    height = 200 - margin.top - margin.bottom;
+var sidebarChartSize = { margin : {top: 20, right: 10, bottom: 30, left: 30} };
+sidebarChartSize.width = 200 - sidebarChartSize.margin.left - sidebarChartSize.margin.right;
+sidebarChartSize.height = 200 - sidebarChartSize.margin.top - sidebarChartSize.margin.bottom;
+
+var largeChartSize = { margin : {top: 20, right: 20, bottom: 30, left: 50} };
+largeChartSize.width = 600 - largeChartSize.margin.left - largeChartSize.margin.right;
+largeChartSize.height = 400 - largeChartSize.margin.top - largeChartSize.margin.bottom;
+
 var svg, x, y, xAxis, yAxis, line, area, tooltip;
 
-function updateSidebarChart(dataTable) {
+function getOffsets(data) {
+    if (!data) {
+        return [{offset: "0%", opacity: "1"},
+                {offset: "20%", opacity: "1"},
+                {offset: "40%", opacity: "1"},
+                {offset: "60%", opacity: "1"},
+                {offset: "80%", opacity: "1"},
+                {offset: "100%", opacity: "1"} ];
+    }
 
+    var totalDatapoints = 0;
+    $.each(data, function() {
+        totalDatapoints += parseInt(this.datapoints);
+    });
+
+    var offsets = [];
+    var minOpacity = 0, maxOpacity = 0, isAreaVisible = false;
+    console.log(JSON.stringify(data));
+    jQuery.each([50, 60, 70, 80, 90, 100], function() {
+        var interval = this;
+        var o = {};
+        o.offset = (interval - 50) * 2 + "%";
+        var intervalDatapoints = 0;
+        for(var key in data) {
+            if(data[key].confidence == interval) {
+                intervalDatapoints = data[key].datapoints;
+            }
+            if(data[key].ideal != data[key].actual) {
+                isAreaVisible = true;
+            }
+        } 
+        o.opacity = (intervalDatapoints/totalDatapoints ).toString();
+        if (isAreaVisible && o.opacity < minOpacity) {
+            minOpacity = o.opacity;
+        }
+        if (isAreaVisible && o.opacity > maxOpacity) {
+            maxOpacity = o.opacity;
+        } 
+        offsets.push(o);
+    });
+
+    for(var key in offsets) {
+        offsets[key].opacity = normalize(minOpacity, maxOpacity, 0, 1, offsets[key].opacity);
+    }
+    return offsets;
+}
+
+function updateChart(dataTable) {
     var data = tableToJson(dataTable);
     data.forEach(function(d) {
         d["ideal"]= +d["ideal"];
         d["actual"] = +d["actual"];
     });
+
+    var transition = d3.transition()
+        .duration(150);
+   
+    svg.datum(data);
     
     /* 
     // Resize y-axis
@@ -29,46 +85,55 @@ function updateSidebarChart(dataTable) {
     ]);
     svg.select("g.y.axis").call(yAxis);
     */
-    
-    svg.datum(data);
-    svg.selectAll("#clip-below > path")
-        .transition()
-        .duration(150)
-        .attr("d", area.y0(height));
 
-    svg.select("#clip-above > path")
-        .transition()
-        .duration(150)
-        .attr("d", area.y0(0));
+    var offsets = getOffsets(data);
+    transition.each(function() {
+       /* svg.selectAll("#clip-below > path")
+            .transition()
+                .attr("d", area.y0(sidebarChartSize.height));*/
 
-    svg.select("path.area.above")
-        .transition()
-        .duration(150)
-        .attr("d", area.y0(function(d) { return y(d["actual"]); }));
+        svg.select("#clip-above > path")
+            .transition()
+                .attr("d", area.y0(0));
 
-    svg.select("path.area.below")
-        .transition()
-        .duration(150)
-        .attr("d", area);
+        svg.select("path.area.above")
+            .transition()
+                .attr("d", area.y0(function(d) { return y(d["actual"]); }));
 
-    svg.select("path.line")
-        .transition()
-        .duration(150)
-        .attr("d", line);
+        svg.select("path.area.below")
+            .transition()
+                .attr("d", area);
+
+        svg.select("path.line")
+            .transition()
+                .attr("d", line);
+        
+        d3.select("#density-gradient-above").selectAll("stop")
+            .data(offsets)
+            .transition()
+                .attr("offset", function(d) { return d.offset; })
+                .attr("stop-color", "#9370DB")
+                .attr("stop-opacity", function(d) { return d.opacity; });
+
+        d3.select("#density-gradient-below").selectAll("stop")
+            .data(offsets)
+            .transition()
+                .attr("offset", function(d) { return d.offset; })
+                .attr("stop-color", "#FF9900")              // Orange Peel
+                .attr("stop-opacity", function(d) { return d.opacity; });
+        });
 }
 
 function drawSidebarChart(dataTable) {		
     $("#sidebarChart").empty();
-    drawDifferenceChart(dataTable,  "#sidebarChart", margin, width, height)
+    drawDifferenceChart(dataTable,  "#sidebarChart", sidebarChartSize.margin, sidebarChartSize.width, sidebarChartSize.height);
+    updateChart(dataTable);
 }
 
 function drawLargeChart(dataTable) {
-    var margin = {top: 20, right: 20, bottom: 30, left: 50},
-        width = 600 - margin.left - margin.right,
-        height = 400 - margin.top - margin.bottom;
-        
     $("#largeChart").empty();
-    drawDifferenceChart(dataTable,  "#largeChart", margin, width, height)
+    drawDifferenceChart(dataTable,  "#largeChart", largeChartSize.margin, largeChartSize.width, largeChartSize.height);
+    updateChart(dataTable);
 }
 
 function drawDifferenceChart(dataTable, element, margin, width, height) {
@@ -152,6 +217,7 @@ function drawDifferenceChart(dataTable, element, margin, width, height) {
         .attr("class", "line")
         .attr("d", line);
 
+    // x-axis lable
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
@@ -162,6 +228,7 @@ function drawDifferenceChart(dataTable, element, margin, width, height) {
         .style("text-anchor", "end")
         .text("reported confidence");
 
+    // y-axis label
     svg.append("g")
         .attr("class", "y axis")
         .call(yAxis)
@@ -172,7 +239,33 @@ function drawDifferenceChart(dataTable, element, margin, width, height) {
         .style("text-anchor", "end")
         .text("% correct");
 
-        /* 
+    var offsets = getOffsets(data); 
+    
+    svg.append("linearGradient")
+        .attr("id", "density-gradient-above")
+            .attr("gradientUnits", "userSpaceOnUse")
+            .attr("x1", x(50)).attr("y1", 0)            // start gradient at x=50
+            .attr("x2", x(100)).attr("y2", 0)           // end gradient at x=100
+        .selectAll("stop")
+            .data(offsets)
+        .enter().append("stop")
+            .attr("offset", function(d) { return d.offset; })
+            .attr("stop-color", "#9370DB")
+            .attr("stop-opacity", function(d) { return d.opacity; });
+
+     svg.append("linearGradient")
+            .attr("id", "density-gradient-below")
+            .attr("gradientUnits", "userSpaceOnUse")
+            .attr("x1", x(50)).attr("y1", 0)            // start gradient at x=50
+            .attr("x2", x(100)).attr("y2", 0)           // end gradient at x=100
+        .selectAll("stop")
+            .data(offsets)
+        .enter().append("stop")
+            .attr("offset", function(d) { return d.offset; })
+            .attr("stop-color", "#FF9900")              // Orange Peel
+            .attr("stop-opacity", function(d) { return d.opacity; }); 
+
+    /* 
     // create legend
     svg.append("g")
         .attr("class", "legend")
@@ -183,7 +276,7 @@ function drawDifferenceChart(dataTable, element, margin, width, height) {
         .attr("dy", "3em")
         .style("text-anchor", "end")
         .text("Underconfidence");
-        */
+    */
 
 }
 
@@ -336,7 +429,7 @@ $(document).ready(function() {
                 $('#next').addClass('disabled');
 
                 jQuiz.popResponse();
-                updateSidebarChart(jQuiz.calibrationData());
+                updateChart(jQuiz.calibrationData());
                 
                 $($questions.get(currentQuestion)).fadeOut(300, function() {					
                     currentQuestion = currentQuestion - 1;
@@ -371,7 +464,7 @@ $(document).ready(function() {
                 $('#back').addClass('disabled');
                 
                 jQuiz.addResponse();
-                updateSidebarChart(jQuiz.calibrationData());
+                updateChart(jQuiz.calibrationData());
                 
                 $($questions.get(currentQuestion)).fadeOut(300, function() {
                     // advance question index
@@ -525,7 +618,7 @@ $(document).ready(function() {
             }
         },
         calibrationData: function() {
-            var dataTable = [['confidence', 'ideal', 'actual']];
+            var dataTable = [['confidence', 'ideal', 'actual', 'datapoints']];
             for(i = 50; i<=100; i+=10) {
                 var total = 0;
                 var correct = 0;
@@ -535,7 +628,7 @@ $(document).ready(function() {
                         correct += (this.correct ? 1 : 0);
                     }
                 });
-                dataTable.push([i, i, (total == 0 ? i : correct/total*100)]);
+                dataTable.push([i, i, (total == 0 ? i : correct/total*100), total]);
             }
             return dataTable;
         }

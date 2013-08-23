@@ -34,7 +34,6 @@ function getOffsets(data) {
 
     var offsets = [];
     var minOpacity = 0, maxOpacity = 0, isAreaVisible = false;
-    console.log(JSON.stringify(data));
     jQuery.each([50, 60, 70, 80, 90, 100], function() {
         var interval = this;
         var o = {};
